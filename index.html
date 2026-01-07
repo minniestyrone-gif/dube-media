@@ -8,12 +8,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
+            background-color: #050505;
         }
         .font-serif {
             font-family: 'Playfair Display', serif;
+        }
+        /* Ensure sections don't hide under the fixed navbar when scrolled to via ID */
+        section[id] {
+            scroll-margin-top: 100px;
         }
         .glass {
             background: rgba(255, 255, 255, 0.05);
@@ -35,6 +42,11 @@
         .animate-float-delayed {
             animation: float 6s ease-in-out infinite;
             animation-delay: 2s;
+        }
+        /* Selection colors */
+        ::selection {
+            background: #ffffff;
+            color: #000000;
         }
     </style>
 <script type="importmap">
