@@ -1,0 +1,7 @@
+{
+  "name": "Dube Media - Premium Photography",
+  "description": "A high-end, interactive landing page for Dube Media photography, featuring portraits, events, and street photography with floating widgets and modern animations.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
