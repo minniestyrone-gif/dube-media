@@ -1,7 +1,8 @@
 {
-  "name": "WKM Media - Premium Photography",
-  "description": "A high-end, interactive landing page for WKM Media photography, featuring portraits, events, and street photography with floating widgets and modern animations.",
+  "name": "dube media - Premium Photography",
+  "description": "A high-end, interactive landing page for dube media photography, featuring portraits, events, and street photography with floating widgets and modern animations.",
   "requestFramePermissions": [
     "camera"
-  ]
+  ],
+  "majorCapabilities": []
 }

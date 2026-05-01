@@ -128,7 +128,7 @@ const Navbar: React.FC = () => {
           <div className="w-7 h-7 sm:w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
             <CameraFlashIcon size={16} iconClassName="text-black" />
           </div>
-          WKM <span className="text-red-600">MEDIA</span>
+          dube <span className="text-red-600">media</span>
         </button>
 
         {/* Desktop Nav */}
@@ -216,7 +216,7 @@ const Hero: React.FC = () => {
             of a Moment.
           </h1>
           <p className="text-base sm:text-lg text-white/60 max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 font-light leading-relaxed">
-            WKM Media specializes in high-end portrait, dynamic event, and authentic street photography. We don't just take photos; we preserve memories.
+            dube media specializes in high-end portrait, dynamic event, and authentic street photography. We don't just take photos; we preserve memories.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
             <button 
@@ -297,8 +297,8 @@ const AboutSection: React.FC = () => {
   const fixedStoryImage = "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=95&w=3840";
 
   return (
-    <section id="about" className="py-16 sm:py-24 bg-[#0a0a0a] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+    <section id="about" className="min-h-screen flex items-center py-16 sm:py-24 bg-[#0a0a0a] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="relative group order-2 md:order-1">
             <div className="absolute -inset-2 sm:-inset-4 bg-white/5 rounded-[32px] sm:rounded-[40px] blur-xl sm:blur-2xl group-hover:bg-white/10 transition-colors" />
@@ -312,7 +312,7 @@ const AboutSection: React.FC = () => {
               <img 
                 src={fixedStoryImage} 
                 className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-                alt="Wesley Michaels DJ performance"
+                alt="Monga Dube DJ performance"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
             </div>
@@ -322,7 +322,7 @@ const AboutSection: React.FC = () => {
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-3 sm:mb-4">The Story</h2>
             <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 sm:mb-8 leading-tight">Crafting Visual Legacies Since 2025.</h3>
             <p className="text-white/60 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 font-light">
-              Founded by Wesley Michaels, WKM Media was born out of a passion for the raw, unscripted beauty of the urban landscape. What started as a solo street photography project evolved into a premier media house.
+              Founded by Monga Dube, dube media was born out of a passion for the raw, unscripted beauty of the urban landscape. What started as a solo street photography project evolved into a premier media house.
             </p>
             <p className="text-white/60 text-base sm:text-lg leading-relaxed mb-6 sm:mb-10 font-light">
               We believe every portrait has a story, every event has a heartbeat, and every street corner has a secret. We capture these moments with precision and flair.
@@ -395,8 +395,8 @@ const ServicesSection: React.FC = () => {
   ];
 
   return (
-    <section id="services" className="py-16 sm:py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section id="services" className="min-h-screen flex items-center py-16 sm:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-3 sm:mb-4">Expertise</h2>
           <h3 className="text-3xl sm:text-5xl font-serif font-bold">Focused on Quality.</h3>
@@ -533,10 +533,10 @@ const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section id="pricing" className="py-16 bg-white text-black rounded-[40px] sm:rounded-[60px] relative overflow-hidden mx-2 sm:mx-0">
+    <section id="pricing" className="min-h-screen flex items-center py-16 bg-white text-black rounded-[40px] sm:rounded-[60px] relative overflow-hidden mx-2 sm:mx-0">
       <div className="absolute -bottom-24 -left-24 w-64 h-64 sm:w-96 sm:h-96 bg-gray-50 rounded-full blur-[80px] sm:blur-[100px]" />
       
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative w-full">
         <div className="text-center mb-10 sm:mb-12">
           <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/40 mb-3">Investment</h2>
           <h3 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold">Premium Packages</h3>
@@ -580,12 +580,14 @@ const PricingSection: React.FC = () => {
 };
 
 const TestimonialsSection: React.FC = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
   const reviews = [
     {
       name: "Sarah Jenkins",
       role: "Vogue Director",
-      text: "WKM Media captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
+      text: "dube media captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
       avatar: "https://picsum.photos/id/101/100/100",
       rating: 5
     },
@@ -599,7 +601,7 @@ const TestimonialsSection: React.FC = () => {
     {
       name: "Lena Rodriguez",
       role: "Wedding Planner",
-      text: "I've worked with many, but WKM Media is on another level. They tell stories that last and capture moments others miss completely.",
+      text: "I've worked with many, but dube media is on another level. They tell stories that last and capture moments others miss completely.",
       avatar: "https://picsum.photos/id/103/100/100",
       rating: 4
     },
@@ -612,17 +614,39 @@ const TestimonialsSection: React.FC = () => {
     }
   ];
 
-  const scroll = (direction: 'next' | 'prev') => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollTo = direction === 'next' ? scrollLeft + clientWidth : scrollLeft - clientWidth;
-      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.9
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 300 : -300,
+      opacity: 0,
+      scale: 0.9
+    })
+  };
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prevIndex) => (prevIndex + newDirection + reviews.length) % reviews.length);
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
   };
 
   return (
-    <section id="testimonials" className="py-16 sm:py-24 bg-[#050505] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section id="testimonials" className="min-h-screen flex items-center py-16 sm:py-24 bg-[#050505] overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 sm:gap-16 items-start">
           <div className="lg:col-span-1 text-center lg:text-left sticky top-32">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mb-3 sm:mb-4">Voice of Clients</h2>
@@ -639,72 +663,90 @@ const TestimonialsSection: React.FC = () => {
                </div>
             </div>
             
-            <div className="hidden lg:flex gap-4">
+            <div className="flex items-center justify-center lg:justify-start gap-4">
               <button 
-                onClick={() => scroll('prev')}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                onClick={() => paginate(-1)}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all group"
+                aria-label="Previous testimonial"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={20} className="group-active:scale-90 transition-transform" />
               </button>
               <button 
-                onClick={() => scroll('next')}
-                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
+                onClick={() => paginate(1)}
+                className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all group"
+                aria-label="Next testimonial"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={20} className="group-active:scale-90 transition-transform" />
               </button>
+              <div className="ml-4 text-[10px] font-bold tracking-widest text-white/20">
+                {currentIndex + 1} / {reviews.length}
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-2 relative">
-            <div 
-              ref={scrollRef}
-              className="flex overflow-x-auto snap-x snap-mandatory gap-6 no-scrollbar pb-8"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {reviews.map((rev, idx) => (
-                <motion.div 
-                  key={rev.name}
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex-shrink-0 w-full sm:w-[450px] snap-center glass p-6 sm:p-8 rounded-[24px] sm:rounded-3xl"
-                >
-                  <div className="flex gap-1 mb-4 sm:mb-6">
-                     {[1,2,3,4,5].map(i => (
-                       <Star 
-                          key={i} 
-                          size={14}
-                          className={`${i <= rev.rating ? 'fill-white text-white' : 'text-white/20'}`} 
-                        />
-                      ))}
-                  </div>
-                  <p className="text-base sm:text-lg mb-6 sm:mb-8 font-light italic text-white/80 leading-relaxed">"{rev.text}"</p>
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <img src={rev.avatar} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover" alt={rev.name} />
-                    <div className="text-left">
-                      <div className="font-bold text-xs sm:text-sm">{rev.name}</div>
-                      <div className="text-[10px] sm:text-xs text-white/40">{rev.role}</div>
+          <div className="lg:col-span-2 relative min-h-[350px] sm:min-h-[400px] flex items-center justify-center">
+            <AnimatePresence initial={false} custom={direction}>
+              <motion.div
+                key={currentIndex}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: "spring", stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 }
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = swipePower(offset.x, velocity.x);
+
+                  if (swipe < -swipeConfidenceThreshold) {
+                    paginate(1);
+                  } else if (swipe > swipeConfidenceThreshold) {
+                    paginate(-1);
+                  }
+                }}
+                className="absolute w-full max-w-[500px] cursor-grab active:cursor-grabbing p-6 sm:p-10 glass rounded-[32px] sm:rounded-[40px] shadow-2xl border border-white/10 select-none"
+              >
+                <div className="flex gap-1 mb-6">
+                   {[1,2,3,4,5].map(i => (
+                     <Star 
+                        key={i} 
+                        size={16}
+                        className={`${i <= reviews[currentIndex].rating ? 'fill-white text-white' : 'text-white/20'}`} 
+                      />
+                    ))}
+                </div>
+                
+                <p className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 font-light italic text-white/90 leading-relaxed">
+                  "{reviews[currentIndex].text}"
+                </p>
+                
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <img 
+                      src={reviews[currentIndex].avatar} 
+                      className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border border-white/10 shadow-lg" 
+                      alt={reviews[currentIndex].name} 
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-md">
+                      <Star size={10} className="fill-black text-black" />
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                  <div className="text-left">
+                    <div className="font-bold text-sm sm:text-base tracking-tight">{reviews[currentIndex].name}</div>
+                    <div className="text-[10px] sm:text-xs text-white/40 uppercase tracking-widest">{reviews[currentIndex].role}</div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
             
-            {/* Mobile/Tablet Controls */}
-            <div className="flex lg:hidden justify-center gap-6 mt-4">
-              <button 
-                onClick={() => scroll('prev')}
-                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button 
-                onClick={() => scroll('next')}
-                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white hover:text-black transition-all"
-              >
-                <ChevronRight size={18} />
-              </button>
+            {/* Background decorative cards for depth */}
+            <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-10 blur-[1px]">
+              <div className="w-[85%] h-[80%] glass-dark rounded-[40px] transform translate-y-4 scale-95" />
             </div>
           </div>
         </div>
@@ -715,15 +757,15 @@ const TestimonialsSection: React.FC = () => {
 
 const Footer: React.FC = () => {
   return (
-    <footer id="contact" className="py-12 sm:py-20 border-t border-white/10 bg-[#050505]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <footer id="contact" className="min-h-[50vh] flex items-center py-12 sm:py-20 border-t border-white/10 bg-[#050505]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 mb-12 sm:mb-16">
           <div className="md:col-span-2 text-center md:text-left">
             <div className="text-xl sm:text-2xl font-serif font-bold tracking-tighter mb-4 sm:mb-6 flex items-center justify-center md:justify-start gap-2">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
+              <div className="w-7 h-7 sm:w-8 h-8 bg-white rounded-full flex items-center justify-center overflow-hidden">
                 <CameraFlashIcon size={16} iconClassName="text-black" />
               </div>
-              WKM <span className="text-red-600">MEDIA</span>
+              dube <span className="text-red-600">media</span>
             </div>
             <p className="text-white/40 max-w-sm mx-auto md:mx-0 mb-6 sm:mb-8 text-sm leading-relaxed">
               Based in Cape Town. Specialized in capturing portraits, events, and authentic street photography.
@@ -744,7 +786,7 @@ const Footer: React.FC = () => {
           <div className="text-center md:text-left">
             <h5 className="font-bold text-xs uppercase tracking-widest mb-4 sm:mb-6">Contact</h5>
             <ul className="space-y-3 sm:space-y-4 text-white/40 text-xs sm:text-sm">
-              <li>hello@wkmmedia.com</li>
+              <li>hello@dubemedia.com</li>
               <li>+27 (0) 555-123-456</li>
               <li>Cape Town, South Africa</li>
             </ul>
@@ -752,7 +794,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="pt-6 sm:pt-8 border-t border-white/5 flex flex-col md:row justify-between items-center gap-4 text-[8px] sm:text-[10px] text-white/20 uppercase tracking-[0.2em] font-bold text-center">
-          <div>© 2024 WKM Media. All Rights Reserved.</div>
+          <div>© 2024 dube media. All Rights Reserved.</div>
           <div className="flex gap-6 sm:gap-8">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms</a>
