@@ -130,7 +130,7 @@ const Navbar: React.FC<{ isDark: boolean; toggleTheme: () => void }> = ({ isDark
           <div className={`w-7 h-7 sm:w-8 h-8 ${isDark ? 'bg-white' : 'bg-black'} rounded-full flex items-center justify-center overflow-hidden`}>
             <CameraFlashIcon size={16} iconClassName={isDark ? 'text-black' : 'text-white'} />
           </div>
-          Meeds <span className="text-[#D4AF37]">Creative</span>
+          Photography <span className="text-[#D4AF37]">to Remember</span>
         </button>
 
         {/* Desktop Nav */}
@@ -235,7 +235,7 @@ const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             of a Moment.
           </h1>
           <p className={`text-base sm:text-lg ${isDark ? 'text-white/60' : 'text-black/60'} max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 font-light leading-relaxed`}>
-            Meeds Creative specializes in high-end portrait, dynamic event, and authentic street photography. We don't just take photos; we preserve memories.
+            Photography to Remember specializes in capturing the precious milestones of your life—from timeless weddings and maternity glow to the warmth of family and group celebrations. We don't just take photos; we preserve your legacy.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
             <button 
@@ -312,8 +312,8 @@ const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 };
 
 const AboutSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
-  // Ultra high-res DJ performing image for the Story section
-  const fixedStoryImage = "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=95&w=3840";
+  // Wedding rings image for the Story section
+  const fixedStoryImage = "https://www.fhinds.co.uk/Admin/Images/Editor/Blog/2020/WeddingBlogUpdates/WeddingRings.jpg";
 
   return (
     <section id="about" className={`min-h-screen flex items-center py-16 sm:py-24 transition-colors duration-500 relative overflow-hidden ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
@@ -331,7 +331,7 @@ const AboutSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
               <img 
                 src={fixedStoryImage} 
                 className={`w-full h-full object-cover brightness-90 group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100 ${isDark ? 'grayscale' : ''}`}
-                alt="Meeds Creative story"
+                alt="Photography to Remember story"
               />
               <div className={`absolute inset-0 pointer-events-none ${isDark ? 'bg-gradient-to-t from-black/60 to-transparent' : 'bg-gradient-to-t from-gray-900/20 to-transparent'}`} />
             </div>
@@ -339,12 +339,12 @@ const AboutSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
           
           <div className="relative order-1 md:order-2">
             <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${isDark ? 'text-white/40' : 'text-black/40'}`}>The Story</h2>
-            <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 sm:mb-8 leading-tight ${isDark ? 'text-white' : 'text-black'}`}>Crafting Visual Legacies Since 2024.</h3>
+            <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 sm:mb-8 leading-tight ${isDark ? 'text-white' : 'text-black'}`}>Preserving Life's Most Beautiful Chapters.</h3>
             <p className={`text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 font-light ${isDark ? 'text-white/60' : 'text-black/60'}`}>
-              Meeds Creative was born out of a passion for the raw, unscripted beauty of the urban landscape. What started as a solo street photography project evolved into a premier media house.
+              Photography to Remember is more than just a lens; it's a witness to your most precious milestones. From the whispered "I do" of a wedding day to the glowing anticipation of a new life, we specialize in capturing the raw emotion and timeless beauty of your family's journey.
             </p>
             <p className={`text-base sm:text-lg leading-relaxed mb-6 sm:mb-10 font-light ${isDark ? 'text-white/60' : 'text-black/60'}`}>
-              We believe every portrait has a story, every event has a heartbeat, and every street corner has a secret. We capture these moments with precision and flair.
+              Whether it's a tender maternity session, a joyful family reunion, or a celebratory group portrait, we believe that every connection deserves to be immortalized. We create visual heirlooms that allow you to relive your most cherished stories for generations to come.
             </p>
             
             <div className="flex sm:justify-start">
@@ -369,47 +369,46 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 
   const services: ServiceDetail[] = [
     {
-      title: "Premium Portraits",
-      description: "Personal branding, editorial headshots, and creative studio sessions.",
-      longDescription: "Our portrait photography is focused on revealing the authentic essence of the individual. We blend editorial techniques with high-end lighting to create images that don't just show what you look like, but who you are.",
+      title: "Wedding Stories",
+      description: "Capturing the magic and raw emotion of your most significant 'I do'.",
+      longDescription: "From intimate elopements to grand celebrations, we provide comprehensive, cinematic documentation of your wedding day. We focus on the unscripted moments, the tears of joy, and the electric energy of your love story.",
       services: [
-        "Executive & Corporate Headshots",
-        "Personal Branding Collections",
-        "Editorial Fashion Portraits",
-        "Creative Studio Sessions",
-        "Modeling Portfolios"
+        "Full Day Coverage",
+        "Engagement Sessions",
+        "Intimate Elopements",
+        "Premium Photobooks",
+        "Cinematic Highlight Reels"
+      ],
+      icon: <Camera className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "Family & Maternity",
+      description: "Celebrating the miracle of new life and the warmth of family bonds.",
+      longDescription: "We specialize in reveling the authentic connection within your family. Whether it's the glowing anticipation of maternity or the joyful chaos of a growing family, we create visual heirlooms that your children will cherish.",
+      services: [
+        "Maternity Milestones",
+        "Newborn & Infant Sessions",
+        "Timeless Family Portraits",
+        "Generational Group Shoots",
+        "Home Lifestyle Sessions"
       ],
       icon: <Users className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600"
+      image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800"
     },
     {
-      title: "Event Coverage",
-      description: "High-energy coverage for club events, festivals, and celebrations.",
-      longDescription: "We provide comprehensive, cinematic documentation of your most significant milestones. Our team captures the pulse of the nightlife, featuring the electric energy of the crowd and the brilliance of strobe lights.",
+      title: "Group Celebrations",
+      description: "Vibrant snapshots of joy shared with your favorite people.",
+      longDescription: "Life is meant to be celebrated together. We capture the pulse of reunions, anniversaries, and milestones with a focus on group dynamics and the shared laughter that defines your inner circle.",
       services: [
-        "Club Events & Festivals",
-        "High-End Nightlife Galas",
-        "Music Performance Coverage",
-        "Brand Product Launches",
-        "VIP Party Documentaries"
+        "Birthday Group Portraits",
+        "Anniversary Documentaries",
+        "Family Reunion Highlights",
+        "Bridal & Baby Showers",
+        "Graduation Celebrations"
       ],
-      icon: <Play className="w-6 h-6" />,
-      // Updated to a high-quality club nightlife scene
-      image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1200"
-    },
-    {
-      title: "Street & Urban",
-      description: "Authentic urban storytelling, commercial lifestyle, and brand activations.",
-      longDescription: "Rooted in our heritage of street photography, we offer a raw and authentic look at life in the city. We translate urban energy into narratives for brands that demand an edgy, real-world aesthetic.",
-      services: [
-        "Commercial Lifestyle Campaigns",
-        "Brand Activations",
-        "Urban Landscape Documentaries",
-        "Architectural Highlights",
-        "Street Fashion Lookbooks"
-      ],
-      icon: <MapPin className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1547447134-cd3f5c716030?auto=format&fit=crop&q=80&w=600"
+      icon: <Users className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800"
     }
   ];
 
@@ -606,7 +605,7 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     {
       name: "Sarah Jenkins",
       role: "Vogue Director",
-      text: "Meeds Creative captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
+      text: "Photography to Remember captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
       avatar: "https://picsum.photos/id/101/100/100",
       rating: 5
     },
@@ -620,7 +619,7 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     {
       name: "Lena Rodriguez",
       role: "Wedding Planner",
-      text: "I've worked with many, but Meeds Creative is on another level. They tell stories that last and capture moments others miss completely.",
+      text: "I've worked with many, but Photography to Remember is on another level. They tell stories that last and capture moments others miss completely.",
       avatar: "https://picsum.photos/id/103/100/100",
       rating: 4
     },
@@ -784,7 +783,7 @@ const Footer: React.FC<{ isDark: boolean }> = ({ isDark }) => {
               <div className={`w-7 h-7 sm:w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${isDark ? 'bg-white' : 'bg-black'}`}>
                 <CameraFlashIcon size={16} iconClassName={isDark ? 'text-black' : 'text-white'} />
               </div>
-              Meeds <span className="text-[#D4AF37]">Creative</span>
+              Photography <span className="text-[#D4AF37]">to Remember</span>
             </div>
             <p className={`max-w-sm mx-auto md:mx-0 mb-6 sm:mb-8 text-sm leading-relaxed ${isDark ? 'text-white/40' : 'text-black/40'}`}>
               Based in Cape Town. Specialized in capturing portraits, events, and authentic street photography.
@@ -806,14 +805,14 @@ const Footer: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             <h5 className={`font-bold text-xs uppercase tracking-widest mb-4 sm:mb-6 ${isDark ? 'text-white' : 'text-black'}`}>Contact</h5>
             <ul className={`space-y-3 sm:space-y-4 text-xs sm:text-sm ${isDark ? 'text-white/40' : 'text-black/40'}`}>
               <li>hello@meedscreative.com</li>
-              <li>081 595 1294</li>
+              <li>084 619 9927</li>
               <li>Cape Town, South Africa</li>
             </ul>
           </div>
         </div>
 
         <div className={`pt-6 sm:pt-8 border-t flex flex-col md:row justify-between items-center gap-4 text-[8px] sm:text-[10px] uppercase tracking-[0.2em] font-bold text-center ${isDark ? 'border-white/5 text-white/20' : 'border-black/5 text-black/20'}`}>
-          <div>© 2024 Meeds Creative. All Rights Reserved.</div>
+          <div>© 2024 Photography to Remember. All Rights Reserved.</div>
           <div className="flex gap-6 sm:gap-8">
             <a href="#" className={isDark ? 'hover:text-white' : 'hover:text-black'}>Privacy Policy</a>
             <a href="#" className={isDark ? 'hover:text-white' : 'hover:text-black'}>Terms</a>
