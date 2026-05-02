@@ -97,7 +97,12 @@ const CameraFlashIcon: React.FC<{ size?: number; className?: string; iconClassNa
   );
 };
 
-const Navbar: React.FC<{ isDark: boolean; toggleTheme: () => void }> = ({ isDark, toggleTheme }) => {
+interface NavbarProps {
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -120,51 +125,74 @@ const Navbar: React.FC<{ isDark: boolean; toggleTheme: () => void }> = ({ isDark
     setIsMobileMenuOpen(false);
   };
 
+  const navBg = theme === 'dark' 
+    ? 'bg-[#050505]/90 backdrop-blur-md' 
+    : 'bg-white/90 backdrop-blur-md shadow-sm';
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? (isDark ? 'bg-[#050505]/90' : 'bg-white/90') + ' backdrop-blur-md py-4 shadow-xl' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? `${navBg} py-4 shadow-xl` : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
         <button 
           onClick={(e) => handleLinkClick(e, 'home')}
-          className={`text-xl sm:text-2xl font-serif font-bold tracking-tighter flex items-center gap-2 hover:opacity-80 transition-opacity outline-none ${isDark ? 'text-white' : 'text-black'}`}
+          className={`text-xl sm:text-2xl font-serif font-bold tracking-tighter flex items-center gap-2 hover:opacity-80 transition-opacity outline-none ${theme === 'dark' ? 'text-white' : 'text-black'}`}
         >
-          <div className={`w-7 h-7 sm:w-8 h-8 ${isDark ? 'bg-white' : 'bg-black'} rounded-full flex items-center justify-center overflow-hidden`}>
-            <CameraFlashIcon size={16} iconClassName={isDark ? 'text-black' : 'text-white'} />
+          <div className={`w-7 h-7 sm:w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
+            <CameraFlashIcon size={16} iconClassName={theme === 'dark' ? 'text-black' : 'text-white'} />
           </div>
-          Photography <span className="text-[#D4AF37]">to Remember</span>
+          dube <span className="text-[#D4AF37]">media</span>
         </button>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              onClick={(e) => handleLinkClick(e, link.href)}
-              className={`text-xs font-medium transition-colors uppercase tracking-widest cursor-pointer ${isDark ? 'hover:text-white/70 text-white' : 'hover:text-black/70 text-black'}`}
-            >
-              {link.name}
-            </a>
-          ))}
+          <div className="flex items-center gap-8 mr-4">
+            {navLinks.map((link) => (
+              <a 
+                key={link.name} 
+                href={link.href} 
+                onClick={(e) => handleLinkClick(e, link.href)}
+                className={`text-xs font-medium transition-colors uppercase tracking-widest cursor-pointer ${
+                  theme === 'dark' ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'
+                }`}
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
           
-          {/* Theme Toggle Button */}
+          {/* Theme Toggle */}
           <button 
             onClick={toggleTheme}
-            className={`p-2 rounded-full transition-all duration-300 hover:scale-110 ${isDark ? 'bg-white/5 text-white hover:bg-white/10' : 'bg-black/5 text-black hover:bg-black/10'}`}
-            aria-label="Toggle theme"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 ${
+              theme === 'dark' 
+                ? 'border-white/10 hover:bg-white/5 text-white/70' 
+                : 'border-black/10 hover:bg-black/5 text-black/70'
+            }`}
           >
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+            {theme === 'dark' ? (
+              <>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Night</span>
+                <Moon size={14} />
+              </>
+            ) : (
+              <>
+                <span className="text-[10px] font-bold uppercase tracking-widest">Day</span>
+                <Sun size={14} />
+              </>
+            )}
           </button>
         </div>
 
         {/* Mobile Toggle */}
         <div className="flex items-center gap-4 md:hidden">
-           <button 
+          <button 
             onClick={toggleTheme}
-            className={`p-2 rounded-full transition-all ${isDark ? 'text-white' : 'text-black'}`}
+            className={`p-2 rounded-full border ${
+              theme === 'dark' ? 'border-white/10 text-white' : 'border-black/10 text-black'
+            }`}
           >
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
           </button>
-          <button className={`p-2 ${isDark ? 'text-white' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <button className={`p-2 ${theme === 'dark' ? 'text-white' : 'text-black'}`} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -177,14 +205,18 @@ const Navbar: React.FC<{ isDark: boolean; toggleTheme: () => void }> = ({ isDark
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className={`absolute top-full left-0 right-0 p-6 border-b flex flex-col gap-4 md:hidden shadow-2xl ${isDark ? 'bg-[#050505] border-white/10 text-white' : 'bg-white border-black/10 text-black'}`}
+            className={`absolute top-full left-0 right-0 p-6 border-b flex flex-col gap-4 md:hidden shadow-2xl ${
+              theme === 'dark' ? 'bg-[#050505] border-white/10' : 'bg-white border-black/10'
+            }`}
           >
             {navLinks.map((link) => (
               <a 
                 key={link.name} 
                 href={link.href} 
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className={`text-lg font-medium border-b pb-2 uppercase tracking-widest ${isDark ? 'border-white/5' : 'border-black/5'}`}
+                className={`text-lg font-medium border-b pb-2 uppercase tracking-widest ${
+                  theme === 'dark' ? 'text-white border-white/5' : 'text-black border-black/5'
+                }`}
               >
                 {link.name}
               </a>
@@ -196,7 +228,7 @@ const Navbar: React.FC<{ isDark: boolean; toggleTheme: () => void }> = ({ isDark
   );
 };
 
-const FloatingWidget: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ children, className = "", delay = 0 }) => {
+const FloatingWidget: React.FC<{ children: React.ReactNode; className?: string; delay?: number; theme?: 'dark' | 'light' }> = ({ children, className = "", delay = 0, theme = 'dark' }) => {
   return (
     <motion.div 
       initial={{ y: 0 }}
@@ -207,19 +239,21 @@ const FloatingWidget: React.FC<{ children: React.ReactNode; className?: string; 
         ease: "easeInOut",
         delay 
       }}
-      className={`glass-dark rounded-2xl p-4 shadow-2xl backdrop-blur-xl border border-white/10 ${className}`}
+      className={`rounded-2xl p-4 shadow-2xl backdrop-blur-xl border transition-colors duration-500 ${className} ${
+        theme === 'dark' ? 'bg-black/40 border-white/10 text-white' : 'bg-white/40 border-black/10 text-black'
+      }`}
     >
       {children}
     </motion.div>
   );
 };
 
-const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const Hero: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
   return (
-    <section id="home" className={`relative min-h-[90vh] sm:min-h-screen flex items-center pt-24 pb-12 overflow-hidden transition-colors duration-500 ${isDark ? 'bg-[#050505]' : 'bg-gray-50'}`}>
+    <section id="home" className="relative min-h-[90vh] sm:min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
       {/* Background Decor */}
-      <div className={`absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 ${isDark ? 'bg-white/5' : 'bg-black/5'} rounded-full blur-[80px] sm:blur-[120px]`} />
-      <div className={`absolute bottom-1/4 right-1/4 w-80 h-80 sm:w-[500px] sm:h-[500px] ${isDark ? 'bg-white/5' : 'bg-black/5'} rounded-full blur-[100px] sm:blur-[150px]`} />
+      <div className={`absolute top-1/4 left-1/4 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-[80px] sm:blur-[120px] ${theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.03]'}`} />
+      <div className={`absolute bottom-1/4 right-1/4 w-80 h-80 sm:w-[500px] sm:h-[500px] rounded-full blur-[100px] sm:blur-[150px] ${theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.03]'}`} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <motion.div
@@ -229,18 +263,20 @@ const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
           viewport={{ once: true }}
           className="z-10 text-center lg:text-left"
         >
-          <h1 className={`text-4xl sm:text-6xl md:text-8xl font-serif font-bold mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.9] ${isDark ? 'text-white' : 'text-black'}`}>
+          <h1 className={`text-4xl sm:text-6xl md:text-8xl font-serif font-bold mb-6 sm:mb-8 leading-[1.1] sm:leading-[0.9] ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
             Capture <br />
-            <span className={`${isDark ? 'text-white/40' : 'text-black/30'} italic`}>the essence</span> <br />
+            <span className={`${theme === 'dark' ? 'text-white/40' : 'text-black/40'} italic`}>the essence</span> <br />
             of a Moment.
           </h1>
-          <p className={`text-base sm:text-lg ${isDark ? 'text-white/60' : 'text-black/60'} max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 font-light leading-relaxed`}>
-            Photography to Remember specializes in capturing the precious milestones of your life—from timeless weddings and maternity glow to the warmth of family and group celebrations. We don't just take photos; we preserve your legacy.
+          <p className={`text-base sm:text-lg max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 font-light leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
+            dube media specializes in high-end portrait, dynamic event, and authentic street photography. We don't just take photos; we preserve memories.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
             <button 
               onClick={() => scrollToId('about')}
-              className={`w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base sm:text-lg hover:scale-105 transition-all flex items-center justify-center gap-2 group ${isDark ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'}`}
+              className={`w-full sm:w-auto px-8 py-4 rounded-full font-bold text-base sm:text-lg hover:scale-105 transition-all flex items-center justify-center gap-2 group ${
+                theme === 'dark' ? 'bg-white text-black hover:bg-white/90' : 'bg-black text-white hover:bg-black/90'
+              }`}
             >
               About Us <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -254,7 +290,9 @@ const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
               />
               <button 
                 onClick={() => scrollToId('services')}
-                className={`relative z-10 w-full px-8 py-4 rounded-full font-bold text-base sm:text-lg transition-all flex items-center justify-center ${isDark ? 'bg-[#050505] text-white hover:bg-white/5' : 'bg-white text-black hover:bg-black/5'}`}
+                className={`relative z-10 w-full px-8 py-4 rounded-full font-bold text-base sm:text-lg transition-all flex items-center justify-center ${
+                  theme === 'dark' ? 'bg-[#050505] text-white hover:bg-white/5' : 'bg-white text-black hover:bg-black/5'
+                }`}
               >
                 Our Services
               </button>
@@ -268,39 +306,38 @@ const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
-            className={`w-full h-full rounded-[40px] overflow-hidden border shadow-2xl ${isDark ? 'border-white/10' : 'border-black/10'}`}
+            className={`w-full h-full rounded-[40px] overflow-hidden border shadow-2xl ${theme === 'dark' ? 'border-white/10' : 'border-black/5'}`}
           >
             <img 
               src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&q=80&w=1200" 
-              className={`w-full h-full object-cover brightness-75 hover:grayscale-0 transition-all duration-1000 ${isDark ? 'grayscale' : ''}`}
+              className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 transition-all duration-1000"
               alt="Street Photography"
             />
           </motion.div>
 
-          {/* Floating Widgets */}
-          <FloatingWidget className={`absolute top-20 -left-12 max-w-[200px] ${isDark ? 'glass-dark border-white/10' : 'bg-white/80 border-black/10 backdrop-blur-md'}`} delay={0}>
+          <FloatingWidget theme={theme} className="absolute top-20 -left-12 max-w-[200px]" delay={0}>
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 ${isDark ? 'bg-white/10' : 'bg-black/10'} rounded-full flex items-center justify-center overflow-hidden`}>
-                <CameraFlashIcon size={20} iconClassName={isDark ? 'text-white' : 'text-black'} />
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center overflow-hidden ${theme === 'dark' ? 'bg-white/10' : 'bg-black/5'}`}>
+                <CameraFlashIcon size={20} iconClassName={theme === 'dark' ? 'text-white' : 'text-black'} />
               </div>
               <div>
-                <div className={`text-xs ${isDark ? 'text-white/50' : 'text-black/50'}`}>Clients</div>
-                <div className={`text-lg font-bold ${isDark ? 'text-white' : 'text-black'}`}>100+ Happy</div>
+                <div className={`text-xs ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>Clients</div>
+                <div className="text-lg font-bold">100+ Happy</div>
               </div>
             </div>
           </FloatingWidget>
 
-          <FloatingWidget className={`absolute bottom-16 -right-8 max-w-[240px] ${isDark ? 'glass-dark border-white/10' : 'bg-white/80 border-black/10 backdrop-blur-md'}`} delay={1.5}>
+          <FloatingWidget theme={theme} className="absolute bottom-16 -right-8 max-w-[240px]" delay={1.5}>
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <span className={`text-xs ${isDark ? 'text-white/50' : 'text-black/50'} uppercase tracking-widest`}>Recent Shoot</span>
+                <span className={`text-[10px] uppercase tracking-widest ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>Recent Shoot</span>
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               </div>
               <div className="flex items-center gap-3">
                 <img src="https://picsum.photos/id/64/100/100" className="w-10 h-10 rounded-lg object-cover" />
                 <div>
-                  <div className={`text-sm font-bold ${isDark ? 'text-white' : 'text-black'}`}>Clifton 4th</div>
-                  <div className={`text-[10px] ${isDark ? 'text-white/40' : 'text-black/40'}`}>24 Photos Edited</div>
+                  <div className="text-sm font-bold">Clifton 4th</div>
+                  <div className={`text-[10px] ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>24 Photos Edited</div>
                 </div>
               </div>
             </div>
@@ -311,49 +348,51 @@ const Hero: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   );
 };
 
-const AboutSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
-  // Wedding rings image for the Story section
-  const fixedStoryImage = "https://www.fhinds.co.uk/Admin/Images/Editor/Blog/2020/WeddingBlogUpdates/WeddingRings.jpg";
+const AboutSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
+  // Ultra high-res DJ performing image for the Story section
+  const fixedStoryImage = "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=95&w=3840";
 
   return (
-    <section id="about" className={`min-h-screen flex items-center py-16 sm:py-24 transition-colors duration-500 relative overflow-hidden ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+    <section id="about" className={`min-h-screen flex items-center py-16 sm:py-24 relative overflow-hidden transition-colors duration-500 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#f0f0f0]'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="relative group order-2 md:order-1">
-            <div className={`absolute -inset-2 sm:-inset-4 rounded-[32px] sm:rounded-[40px] blur-xl sm:blur-2xl transition-colors ${isDark ? 'bg-white/5 group-hover:bg-white/10' : 'bg-black/5 group-hover:bg-black/10'}`} />
+            <div className={`absolute -inset-2 sm:-inset-4 rounded-[32px] sm:rounded-[40px] blur-xl sm:blur-2xl transition-colors ${theme === 'dark' ? 'bg-white/5 group-hover:bg-white/10' : 'bg-black/5 group-hover:bg-black/10'}`} />
             
-            <div className={`absolute -top-6 -left-6 sm:-top-10 sm:-left-10 p-4 sm:p-8 rounded-2xl sm:rounded-3xl z-20 ${isDark ? 'glass border border-white/10' : 'bg-gray-100/80 border border-black/10 backdrop-blur-md'}`}>
-              <div className={`text-3xl sm:text-5xl font-serif font-bold mb-1 sm:mb-2 ${isDark ? 'text-white/90' : 'text-black/90'}`}>Est.</div>
-              <div className={`text-[10px] sm:text-sm uppercase tracking-widest ${isDark ? 'text-white/60' : 'text-black/60'}`}>Established <br className="hidden sm:block" />2024</div>
+            <div className={`absolute -top-6 -left-6 sm:-top-10 sm:-left-10 p-4 sm:p-8 rounded-2xl sm:rounded-3xl z-20 backdrop-blur-xl border ${
+              theme === 'dark' ? 'bg-black/40 border-white/10' : 'bg-white/40 border-black/10'
+            }`}>
+              <div className={`text-3xl sm:text-5xl font-serif font-bold mb-1 sm:mb-2 ${theme === 'dark' ? 'text-white/90' : 'text-black/90'}`}>Est.</div>
+              <div className={`text-[10px] sm:text-sm uppercase tracking-widest ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>Established <br className="hidden sm:block" />2025</div>
             </div>
 
-            <div className={`relative overflow-hidden rounded-[24px] sm:rounded-[32px] border shadow-2xl aspect-[4/5] ${isDark ? 'border-white/10 bg-neutral-900' : 'border-black/10 bg-gray-200'}`}>
+            <div className={`relative overflow-hidden rounded-[24px] sm:rounded-[32px] border shadow-2xl aspect-[4/5] ${theme === 'dark' ? 'border-white/10 bg-neutral-900' : 'border-black/10 bg-white'}`}>
               <img 
                 src={fixedStoryImage} 
-                className={`w-full h-full object-cover brightness-90 group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100 ${isDark ? 'grayscale' : ''}`}
-                alt="Photography to Remember story"
+                className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                alt="Monga Dube DJ performance"
               />
-              <div className={`absolute inset-0 pointer-events-none ${isDark ? 'bg-gradient-to-t from-black/60 to-transparent' : 'bg-gradient-to-t from-gray-900/20 to-transparent'}`} />
+              <div className={`absolute inset-0 pointer-events-none bg-gradient-to-t ${theme === 'dark' ? 'from-black/60 to-transparent' : 'from-black/20 to-transparent'}`} />
             </div>
           </div>
           
           <div className="relative order-1 md:order-2">
-            <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${isDark ? 'text-white/40' : 'text-black/40'}`}>The Story</h2>
-            <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 sm:mb-8 leading-tight ${isDark ? 'text-white' : 'text-black'}`}>Preserving Life's Most Beautiful Chapters.</h3>
-            <p className={`text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 font-light ${isDark ? 'text-white/60' : 'text-black/60'}`}>
-              Photography to Remember is more than just a lens; it's a witness to your most precious milestones. From the whispered "I do" of a wedding day to the glowing anticipation of a new life, we specialize in capturing the raw emotion and timeless beauty of your family's journey.
+            <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>The Story</h2>
+            <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 sm:mb-8 leading-tight ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Crafting Visual Legacies Since 2025.</h3>
+            <p className={`text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 font-light ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
+              Founded by Monga Dube, dube media was born out of a passion for the raw, unscripted beauty of the urban landscape. What started as a solo street photography project evolved into a premier media house.
             </p>
-            <p className={`text-base sm:text-lg leading-relaxed mb-6 sm:mb-10 font-light ${isDark ? 'text-white/60' : 'text-black/60'}`}>
-              Whether it's a tender maternity session, a joyful family reunion, or a celebratory group portrait, we believe that every connection deserves to be immortalized. We create visual heirlooms that allow you to relive your most cherished stories for generations to come.
+            <p className={`text-base sm:text-lg leading-relaxed mb-6 sm:mb-10 font-light ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
+              We believe every portrait has a story, every event has a heartbeat, and every street corner has a secret. We capture these moments with precision and flair.
             </p>
             
             <div className="flex sm:justify-start">
-              <FloatingWidget className={`p-3 sm:p-4 w-full sm:w-auto ${isDark ? 'border-white/20' : 'bg-black/5 border-black/10'}`} delay={0.8}>
+              <FloatingWidget theme={theme} className="p-3 sm:p-4 w-full sm:w-auto" delay={0.8}>
                 <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden ${isDark ? 'bg-white/10' : 'bg-black/10'}`}>
-                    <Star className={`w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-white fill-white' : 'text-black fill-black'}`} />
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden ${theme === 'dark' ? 'bg-white/10' : 'bg-black/5'}`}>
+                    <Star className={`w-4 h-4 sm:w-5 sm:h-5 ${theme === 'dark' ? 'text-white fill-white' : 'text-black fill-black'}`} />
                   </div>
-                  <div className={`text-sm sm:text-base font-bold tracking-tight ${isDark ? 'text-white' : 'text-black'}`}>100+ Happy Clients</div>
+                  <div className="text-sm sm:text-base font-bold tracking-tight">100+ Happy Clients</div>
                 </div>
               </FloatingWidget>
             </div>
@@ -364,60 +403,61 @@ const AboutSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   );
 };
 
-const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const ServicesSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
   const [selectedService, setSelectedService] = useState<ServiceDetail | null>(null);
 
   const services: ServiceDetail[] = [
     {
-      title: "Wedding Stories",
-      description: "Capturing the magic and raw emotion of your most significant 'I do'.",
-      longDescription: "From intimate elopements to grand celebrations, we provide comprehensive, cinematic documentation of your wedding day. We focus on the unscripted moments, the tears of joy, and the electric energy of your love story.",
+      title: "Premium Portraits",
+      description: "Personal branding, editorial headshots, and creative studio sessions.",
+      longDescription: "Our portrait photography is focused on revealing the authentic essence of the individual. We blend editorial techniques with high-end lighting to create images that don't just show what you look like, but who you are.",
       services: [
-        "Full Day Coverage",
-        "Engagement Sessions",
-        "Intimate Elopements",
-        "Premium Photobooks",
-        "Cinematic Highlight Reels"
-      ],
-      icon: <Camera className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      title: "Family & Maternity",
-      description: "Celebrating the miracle of new life and the warmth of family bonds.",
-      longDescription: "We specialize in reveling the authentic connection within your family. Whether it's the glowing anticipation of maternity or the joyful chaos of a growing family, we create visual heirlooms that your children will cherish.",
-      services: [
-        "Maternity Milestones",
-        "Newborn & Infant Sessions",
-        "Timeless Family Portraits",
-        "Generational Group Shoots",
-        "Home Lifestyle Sessions"
+        "Executive & Corporate Headshots",
+        "Personal Branding Collections",
+        "Editorial Fashion Portraits",
+        "Creative Studio Sessions",
+        "Modeling Portfolios"
       ],
       icon: <Users className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800"
+      image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600"
     },
     {
-      title: "Group Celebrations",
-      description: "Vibrant snapshots of joy shared with your favorite people.",
-      longDescription: "Life is meant to be celebrated together. We capture the pulse of reunions, anniversaries, and milestones with a focus on group dynamics and the shared laughter that defines your inner circle.",
+      title: "Event Coverage",
+      description: "High-energy coverage for club events, festivals, and celebrations.",
+      longDescription: "We provide comprehensive, cinematic documentation of your most significant milestones. Our team captures the pulse of the nightlife, featuring the electric energy of the crowd and the brilliance of strobe lights.",
       services: [
-        "Birthday Group Portraits",
-        "Anniversary Documentaries",
-        "Family Reunion Highlights",
-        "Bridal & Baby Showers",
-        "Graduation Celebrations"
+        "Club Events & Festivals",
+        "High-End Nightlife Galas",
+        "Music Performance Coverage",
+        "Brand Product Launches",
+        "VIP Party Documentaries"
       ],
-      icon: <Users className="w-6 h-6" />,
-      image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800"
+      icon: <Play className="w-6 h-6" />,
+      // Updated to a high-quality club nightlife scene
+      image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=1200"
+    },
+    {
+      title: "Street & Urban",
+      description: "Authentic urban storytelling, commercial lifestyle, and brand activations.",
+      longDescription: "Rooted in our heritage of street photography, we offer a raw and authentic look at life in the city. We translate urban energy into narratives for brands that demand an edgy, real-world aesthetic.",
+      services: [
+        "Commercial Lifestyle Campaigns",
+        "Brand Activations",
+        "Urban Landscape Documentaries",
+        "Architectural Highlights",
+        "Street Fashion Lookbooks"
+      ],
+      icon: <MapPin className="w-6 h-6" />,
+      image: "https://images.unsplash.com/photo-1547447134-cd3f5c716030?auto=format&fit=crop&q=80&w=600"
     }
   ];
 
   return (
-    <section id="services" className={`min-h-screen flex items-center py-16 sm:py-24 transition-colors duration-500 ${isDark ? 'bg-[#050505]' : 'bg-gray-50'}`}>
+    <section id="services" className={`min-h-screen flex items-center py-16 sm:py-24 transition-colors duration-500 ${theme === 'dark' ? 'bg-[#050505]' : 'bg-white'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${isDark ? 'text-white/40' : 'text-black/40'}`}>Expertise</h2>
-          <h3 className={`text-3xl sm:text-5xl font-serif font-bold ${isDark ? 'text-white' : 'text-black'}`}>Focused on Quality.</h3>
+          <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>Expertise</h2>
+          <h3 className={`text-3xl sm:text-5xl font-serif font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Focused on Quality.</h3>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -425,24 +465,32 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             <motion.div 
               key={service.title}
               whileHover={{ y: -10 }}
-              className={`group relative overflow-hidden rounded-[24px] sm:rounded-[32px] border cursor-pointer ${isDark ? 'border-white/10' : 'border-black/10'}`}
+              className={`group relative overflow-hidden rounded-[24px] sm:rounded-[32px] border cursor-pointer transition-colors ${
+                theme === 'dark' ? 'border-white/10' : 'border-black/10'
+              }`}
               onClick={() => setSelectedService(service)}
             >
               <img 
                 src={service.image} 
-                className={`w-full aspect-[4/5] sm:aspect-[3/4] object-cover brightness-[0.4] group-hover:grayscale-0 group-hover:brightness-50 transition-all duration-700 ${isDark ? 'grayscale' : ''}`} 
+                className={`w-full aspect-[4/5] sm:aspect-[3/4] object-cover transition-all duration-700 ${
+                  theme === 'dark' 
+                    ? 'grayscale brightness-[0.4] group-hover:grayscale-0 group-hover:brightness-50' 
+                    : 'grayscale-[0.5] brightness-[0.9] group-hover:grayscale-0 group-hover:brightness-75'
+                }`} 
                 alt={service.title}
               />
               <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-end">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-md rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border border-white/20">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 backdrop-blur-md rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 border ${
+                  theme === 'dark' ? 'bg-white/10 border-white/20 text-white' : 'bg-black/10 border-black/20 text-white'
+                }`}>
                   {service.icon}
                 </div>
                 <h4 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-white">{service.title}</h4>
-                <p className="text-white/60 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 opacity-0 group-hover:opacity-100 transition-all duration-500 hidden sm:block">
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 opacity-0 group-hover:opacity-100 transition-all duration-500 hidden sm:block">
                   {service.description}
                 </p>
                 <div 
-                  className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest group-hover:text-white text-white/70 transition-colors"
+                  className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/70 group-hover:text-white transition-colors"
                 >
                   Learn More <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                 </div>
@@ -459,19 +507,23 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/95 backdrop-blur-md"
           >
             <motion.div 
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className={`border rounded-[32px] sm:rounded-[40px] max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative ${isDark ? 'bg-[#0a0a0a] border-white/10' : 'bg-white border-black/10'}`}
+              className={`border rounded-[32px] sm:rounded-[40px] max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative ${
+                theme === 'dark' ? 'bg-[#0a0a0a] border-white/10' : 'bg-white border-black/10'
+              }`}
             >
               <button 
                 onClick={() => setSelectedService(null)}
-                className={`absolute top-6 right-6 sm:top-8 sm:right-8 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-white/5 hover:bg-white/10' : 'bg-black/5 hover:bg-black/10'}`}
+                className={`absolute top-6 right-6 sm:top-8 sm:right-8 z-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors ${
+                  theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'
+                }`}
               >
-                <X className={`w-4 h-4 sm:w-5 sm:h-5 ${isDark ? 'text-white' : 'text-black'}`} />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
 
               <div className="grid grid-cols-1 md:grid-cols-2">
@@ -481,22 +533,26 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
                     className="w-full h-full object-cover grayscale brightness-50"
                     alt={selectedService.title}
                   />
-                  <div className={`absolute inset-0 bg-gradient-to-r via-transparent to-transparent hidden md:block ${isDark ? 'from-[#0a0a0a]' : 'from-white'}`} />
+                  <div className={`absolute inset-0 hidden md:block bg-gradient-to-r ${
+                    theme === 'dark' ? 'from-[#0a0a0a] via-transparent to-transparent' : 'from-white via-transparent to-transparent'
+                  }`} />
                 </div>
                 
                 <div className="p-6 sm:p-8 md:p-12 flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center ${isDark ? 'bg-white/5' : 'bg-black/5'}`}>
+                    <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center ${
+                      theme === 'dark' ? 'bg-white/5 text-white' : 'bg-black/5 text-black'
+                    }`}>
                       {selectedService.icon}
                     </div>
-                    <h3 className={`text-2xl sm:text-3xl font-serif font-bold ${isDark ? 'text-white' : 'text-black'}`}>{selectedService.title}</h3>
+                    <h3 className={`text-2xl sm:text-3xl font-serif font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{selectedService.title}</h3>
                   </div>
                   
-                  <p className={`text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 font-light ${isDark ? 'text-white/60' : 'text-black/60'}`}>
+                  <p className={`text-base sm:text-lg leading-relaxed mb-6 sm:mb-8 font-light ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
                     {selectedService.longDescription}
                   </p>
 
-                  <h4 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${isDark ? 'text-white/40' : 'text-black/40'}`}>Core Services</h4>
+                  <h4 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>Core Services</h4>
                   <ul className="space-y-3 sm:space-y-4 mb-8">
                     {selectedService.services.map((item, i) => (
                       <motion.li 
@@ -504,9 +560,9 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className={`flex items-center gap-3 text-xs sm:text-sm font-medium ${isDark ? 'text-white' : 'text-black'}`}
+                        className={`flex items-center gap-3 text-xs sm:text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-black'}`}
                       >
-                        <div className={`w-1 h-1 rounded-full ${isDark ? 'bg-white' : 'bg-black'}`} />
+                        <div className={`w-1 h-1 rounded-full ${theme === 'dark' ? 'bg-white' : 'bg-black'}`} />
                         {item}
                       </motion.li>
                     ))}
@@ -514,7 +570,9 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 
                   <button 
                     onClick={() => setSelectedService(null)}
-                    className={`w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-widest hover:scale-105 transition-transform ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}
+                    className={`w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-widest hover:scale-105 transition-transform ${
+                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                    }`}
                   >
                     Close & Explore
                   </button>
@@ -528,7 +586,7 @@ const ServicesSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   );
 };
 
-const PricingSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const PricingSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
   const packages = [
     {
       name: "Essential",
@@ -551,14 +609,18 @@ const PricingSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   ];
 
   return (
-    <section id="pricing" className={`min-h-screen flex items-center py-16 transition-colors duration-500 rounded-[40px] sm:rounded-[60px] relative overflow-hidden mx-2 sm:mx-0 ${isDark ? 'bg-white text-black' : 'bg-black text-white'}`}>
-      <div className={`absolute -bottom-24 -left-24 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-[80px] sm:blur-[100px] ${isDark ? 'bg-gray-50' : 'bg-white/5'}`} />
+    <section id="pricing" className={`min-h-screen flex items-center py-16 rounded-[40px] sm:rounded-[60px] relative overflow-hidden mx-2 sm:mx-0 transition-colors duration-500 ${
+      theme === 'dark' ? 'bg-[#111] text-white' : 'bg-white text-black border border-black/5 shadow-sm'
+    }`}>
+      <div className={`absolute -bottom-24 -left-24 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-[80px] sm:blur-[100px] ${
+        theme === 'dark' ? 'bg-white/5' : 'bg-black/[0.03]'
+      }`} />
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative w-full">
         <div className="text-center mb-10 sm:mb-12">
-          <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 ${isDark ? 'text-black/40' : 'text-white/40'}`}>Investment</h2>
-          <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold ${isDark ? 'text-black' : 'text-white'}`}>Premium Packages</h3>
-          <p className={`mt-4 max-w-lg mx-auto font-light text-sm sm:text-base ${isDark ? 'text-black/50' : 'text-white/50'}`}>All packages can be tailored to your specific needs.</p>
+          <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>Investment</h2>
+          <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Premium Packages</h3>
+          <p className={`mt-4 max-w-lg mx-auto font-light text-sm sm:text-base ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>All packages can be tailored to your specific needs.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
@@ -567,24 +629,30 @@ const PricingSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
               key={pkg.name}
               className={`relative p-8 sm:p-10 rounded-[32px] sm:rounded-[44px] border transition-all duration-500 flex flex-col ${
                 pkg.recommended 
-                ? (isDark ? 'bg-black text-white border-black md:scale-105 shadow-2xl z-10' : 'bg-white text-black border-white md:scale-105 shadow-2xl z-10')
-                : (isDark ? 'bg-white text-black border-black/10 hover:border-black/20' : 'bg-black/40 text-white border-white/10 hover:border-white/20')
+                ? 'bg-black text-white border-black md:scale-105 shadow-2xl z-10' 
+                : theme === 'dark' 
+                  ? 'bg-black/40 text-white border-white/10 hover:border-white/20' 
+                  : 'bg-white text-black border-black/10 hover:border-black/20'
               }`}
             >
               {pkg.recommended && (
-                <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 border px-4 py-1.5 sm:px-6 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] ${isDark ? 'bg-black border-white/20 text-white' : 'bg-white border-black/20 text-black'}`}>
+                <div className={`absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1.5 sm:px-6 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.2em] border ${
+                  theme === 'dark' ? 'bg-black border-white/20 text-white' : 'bg-black border-black text-white'
+                }`}>
                   Most Popular
                 </div>
               )}
               <h4 className="text-lg sm:text-2xl font-bold mb-1 sm:mb-2 uppercase tracking-tight">{pkg.name}</h4>
               <div className="flex items-baseline gap-1 mb-6 sm:mb-8">
                 <span className="text-3xl sm:text-5xl font-serif font-bold tracking-tighter">${pkg.price}</span>
-                <span className={`text-[10px] sm:text-sm ${pkg.recommended ? (isDark ? 'text-white/40' : 'text-black/40') : (isDark ? 'text-black/40' : 'text-white/40')}`}>/ starting</span>
+                <span className={`text-[10px] sm:text-sm ${pkg.recommended ? 'text-white/40' : theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>/ starting</span>
               </div>
               <ul className="space-y-3 sm:space-y-4 flex-grow mb-4">
                 {pkg.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-xs sm:text-base font-medium leading-relaxed">
-                    <Check className={`w-3.5 h-3.5 sm:w-4 sm:h-4 mt-1 flex-shrink-0 ${pkg.recommended ? (isDark ? 'text-white' : 'text-black') : (isDark ? 'text-black' : 'text-white')}`} />
+                  <li key={feature} className={`flex items-start gap-3 text-xs sm:text-base font-medium leading-relaxed ${
+                    pkg.recommended ? 'text-white/90' : theme === 'dark' ? 'text-white/70' : 'text-black/70'
+                  }`}>
+                    <Check className={`w-3.5 h-3.5 sm:w-4 sm:h-4 mt-1 flex-shrink-0 ${pkg.recommended ? 'text-white' : theme === 'dark' ? 'text-white' : 'text-black'}`} />
                     {feature}
                   </li>
                 ))}
@@ -597,7 +665,7 @@ const PricingSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   );
 };
 
-const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const TestimonialsSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
@@ -605,7 +673,7 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     {
       name: "Sarah Jenkins",
       role: "Vogue Director",
-      text: "Photography to Remember captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
+      text: "dube media captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
       avatar: "https://picsum.photos/id/101/100/100",
       rating: 5
     },
@@ -619,7 +687,7 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
     {
       name: "Lena Rodriguez",
       role: "Wedding Planner",
-      text: "I've worked with many, but Photography to Remember is on another level. They tell stories that last and capture moments others miss completely.",
+      text: "I've worked with many, but dube media is on another level. They tell stories that last and capture moments others miss completely.",
       avatar: "https://picsum.photos/id/103/100/100",
       rating: 4
     },
@@ -663,40 +731,44 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   };
 
   return (
-    <section id="testimonials" className={`min-h-screen flex items-center py-16 sm:py-24 transition-colors duration-500 overflow-hidden ${isDark ? 'bg-[#050505]' : 'bg-white'}`}>
+    <section id="testimonials" className={`min-h-screen flex items-center py-16 sm:py-24 overflow-hidden transition-colors duration-500 ${theme === 'dark' ? 'bg-[#050505]' : 'bg-[#fafafa]'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 sm:gap-16 items-start">
           <div className="lg:col-span-1 text-center lg:text-left sticky top-32">
-            <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${isDark ? 'text-white/40' : 'text-black/40'}`}>Voice of Clients</h2>
-            <h3 className={`text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6 italic leading-tight ${isDark ? 'text-white' : 'text-black'}`}>"They have an eye for the extraordinary in the mundane."</h3>
+            <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>Voice of Clients</h2>
+            <h3 className={`text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-6 italic leading-tight ${theme === 'dark' ? 'text-white' : 'text-black'}`}>"They have an eye for the extraordinary in the mundane."</h3>
             <div className="flex items-center justify-center lg:justify-start gap-4 mb-8">
                <div className="flex -space-x-2 sm:-space-x-3">
                   {[1,2,3,4].map(i => (
-                    <img key={i} src={`https://picsum.photos/id/${i+10}/50/50`} className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 ${isDark ? 'border-black' : 'border-white'}`} />
+                    <img key={i} src={`https://picsum.photos/id/${i+10}/50/50`} className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 ${theme === 'dark' ? 'border-black' : 'border-white shadow-sm'}`} />
                   ))}
                </div>
                <div className="text-[10px] sm:text-sm text-left">
-                  <div className={`font-bold ${isDark ? 'text-white' : 'text-black'}`}>Loved by 2k+</div>
-                  <div className={`${isDark ? 'text-white/40' : 'text-black/40'}`}>professionals worldwide</div>
+                  <div className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Loved by 2k+</div>
+                  <div className={`${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>professionals worldwide</div>
                </div>
             </div>
             
             <div className="flex items-center justify-center lg:justify-start gap-4">
               <button 
                 onClick={() => paginate(-1)}
-                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all group ${isDark ? 'border-white/10 hover:bg-white hover:text-black' : 'border-black/10 hover:bg-black hover:text-white text-black'}`}
+                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all group ${
+                  theme === 'dark' ? 'border-white/10 hover:bg-white hover:text-black' : 'border-black/10 hover:bg-black hover:text-white'
+                }`}
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft size={20} className="group-active:scale-90 transition-transform" />
               </button>
               <button 
                 onClick={() => paginate(1)}
-                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all group ${isDark ? 'border-white/10 hover:bg-white hover:text-black' : 'border-black/10 hover:bg-black hover:text-white text-black'}`}
+                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all group ${
+                  theme === 'dark' ? 'border-white/10 hover:bg-white hover:text-black' : 'border-black/10 hover:bg-black hover:text-white'
+                }`}
                 aria-label="Next testimonial"
               >
                 <ChevronRight size={20} className="group-active:scale-90 transition-transform" />
               </button>
-              <div className={`ml-4 text-[10px] font-bold tracking-widest ${isDark ? 'text-white/20' : 'text-black/20'}`}>
+              <div className={`ml-4 text-[10px] font-bold tracking-widest ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`}>
                 {currentIndex + 1} / {reviews.length}
               </div>
             </div>
@@ -727,19 +799,21 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
                     paginate(-1);
                   }
                 }}
-                className={`absolute w-full max-w-[500px] cursor-grab active:cursor-grabbing p-6 sm:p-10 rounded-[32px] sm:rounded-[40px] shadow-2xl border select-none ${isDark ? 'glass border-white/10' : 'bg-white border-black/10'}`}
+                className={`absolute w-full max-w-[500px] cursor-grab active:cursor-grabbing p-6 sm:p-10 rounded-[32px] sm:rounded-[40px] shadow-2xl border select-none transition-colors duration-500 backdrop-blur-xl ${
+                  theme === 'dark' ? 'bg-black/40 border-white/10' : 'bg-white border-black/10'
+                }`}
               >
                 <div className="flex gap-1 mb-6">
                    {[1,2,3,4,5].map(i => (
                      <Star 
                         key={i} 
                         size={16}
-                        className={`${i <= reviews[currentIndex].rating ? (isDark ? 'fill-white text-white' : 'fill-black text-black') : (isDark ? 'text-white/20' : 'text-black/20')}`} 
+                        className={`${i <= reviews[currentIndex].rating ? (theme === 'dark' ? 'fill-white text-white' : 'fill-black text-black') : (theme === 'dark' ? 'text-white/20' : 'text-black/20')}`} 
                       />
                     ))}
                 </div>
                 
-                <p className={`text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 font-light italic leading-relaxed ${isDark ? 'text-white/90' : 'text-black/90'}`}>
+                <p className={`text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 font-light italic leading-relaxed ${theme === 'dark' ? 'text-white/90' : 'text-black/90'}`}>
                   "{reviews[currentIndex].text}"
                 </p>
                 
@@ -747,16 +821,16 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
                   <div className="relative">
                     <img 
                       src={reviews[currentIndex].avatar} 
-                      className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border shadow-lg ${isDark ? 'border-white/10' : 'border-black/5'}`} 
+                      className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover border ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`} 
                       alt={reviews[currentIndex].name} 
                     />
-                    <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-md ${isDark ? 'bg-white' : 'bg-black'}`}>
-                      <Star size={10} className={isDark ? 'fill-black text-black' : 'fill-white text-white'} />
+                    <div className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center shadow-md ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
+                      <Star size={10} className={`${theme === 'dark' ? 'fill-black text-black' : 'fill-white text-white'}`} />
                     </div>
                   </div>
                   <div className="text-left">
-                    <div className={`font-bold text-sm sm:text-base tracking-tight ${isDark ? 'text-white' : 'text-black'}`}>{reviews[currentIndex].name}</div>
-                    <div className={`text-[10px] sm:text-xs uppercase tracking-widest ${isDark ? 'text-white/40' : 'text-black/40'}`}>{reviews[currentIndex].role}</div>
+                    <div className={`font-bold text-sm sm:text-base tracking-tight ${theme === 'dark' ? 'text-white' : 'text-black'}`}>{reviews[currentIndex].name}</div>
+                    <div className={`text-[10px] sm:text-xs uppercase tracking-widest ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>{reviews[currentIndex].role}</div>
                   </div>
                 </div>
               </motion.div>
@@ -764,7 +838,7 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
             
             {/* Background decorative cards for depth */}
             <div className={`absolute inset-0 -z-10 flex items-center justify-center opacity-10 blur-[1px]`}>
-              <div className={`w-[85%] h-[80%] rounded-[40px] transform translate-y-4 scale-95 ${isDark ? 'glass-dark' : 'bg-gray-200'}`} />
+              <div className={`w-[85%] h-[80%] rounded-[40px] transform translate-y-4 scale-95 ${theme === 'dark' ? 'bg-black border border-white/10' : 'bg-white border border-black/10'}`} />
             </div>
           </div>
         </div>
@@ -773,49 +847,61 @@ const TestimonialsSection: React.FC<{ isDark: boolean }> = ({ isDark }) => {
   );
 };
 
-const Footer: React.FC<{ isDark: boolean }> = ({ isDark }) => {
+const Footer: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
   return (
-    <footer id="contact" className={`min-h-[50vh] flex items-center py-12 sm:py-20 border-t transition-colors duration-500 ${isDark ? 'bg-[#050505] border-white/10' : 'bg-gray-50 border-black/10'}`}>
+    <footer id="contact" className={`min-h-[50vh] flex items-center py-12 sm:py-20 border-t transition-colors duration-500 ${
+      theme === 'dark' ? 'bg-[#050505] border-white/10' : 'bg-[#f7f7f7] border-black/10'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12 mb-12 sm:mb-16">
           <div className="md:col-span-2 text-center md:text-left">
-            <div className={`text-xl sm:text-2xl font-serif font-bold tracking-tighter mb-4 sm:mb-6 flex items-center justify-center md:justify-start gap-2 ${isDark ? 'text-white' : 'text-black'}`}>
-              <div className={`w-7 h-7 sm:w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${isDark ? 'bg-white' : 'bg-black'}`}>
-                <CameraFlashIcon size={16} iconClassName={isDark ? 'text-black' : 'text-white'} />
+            <div className={`text-xl sm:text-2xl font-serif font-bold tracking-tighter mb-4 sm:mb-6 flex items-center justify-center md:justify-start gap-2 ${
+              theme === 'dark' ? 'text-white' : 'text-black'
+            }`}>
+              <div className={`w-7 h-7 sm:w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
+                <CameraFlashIcon size={16} iconClassName={theme === 'dark' ? 'text-black' : 'text-white'} />
               </div>
-              Photography <span className="text-[#D4AF37]">to Remember</span>
+              dube <span className="text-[#D4AF37]">media</span>
             </div>
-            <p className={`max-w-sm mx-auto md:mx-0 mb-6 sm:mb-8 text-sm leading-relaxed ${isDark ? 'text-white/40' : 'text-black/40'}`}>
+            <p className={`max-w-sm mx-auto md:mx-0 mb-6 sm:mb-8 text-sm leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
               Based in Cape Town. Specialized in capturing portraits, events, and authentic street photography.
             </p>
             <div className="flex justify-center md:justify-start gap-4">
-              <a href="#" className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'}`}>
+              <a href="#" className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'
+              }`}>
                 <Instagram size={18} />
               </a>
-              <a href="#" className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'}`}>
+              <a href="#" className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'
+              }`}>
                 <Facebook size={18} />
               </a>
-              <a href="#" className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isDark ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'}`}>
+              <a href="#" className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-white' : 'bg-black/5 hover:bg-black/10 text-black'
+              }`}>
                 <Linkedin size={18} />
               </a>
             </div>
           </div>
 
           <div className="text-center md:text-left">
-            <h5 className={`font-bold text-xs uppercase tracking-widest mb-4 sm:mb-6 ${isDark ? 'text-white' : 'text-black'}`}>Contact</h5>
-            <ul className={`space-y-3 sm:space-y-4 text-xs sm:text-sm ${isDark ? 'text-white/40' : 'text-black/40'}`}>
-              <li>hello@meedscreative.com</li>
-              <li>084 619 9927</li>
+            <h5 className={`font-bold text-xs uppercase tracking-widest mb-4 sm:mb-6 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Contact</h5>
+            <ul className={`space-y-3 sm:space-y-4 text-xs sm:text-sm ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
+              <li>hello@dubemedia.com</li>
+              <li>064 655 5865</li>
               <li>Cape Town, South Africa</li>
             </ul>
           </div>
         </div>
 
-        <div className={`pt-6 sm:pt-8 border-t flex flex-col md:row justify-between items-center gap-4 text-[8px] sm:text-[10px] uppercase tracking-[0.2em] font-bold text-center ${isDark ? 'border-white/5 text-white/20' : 'border-black/5 text-black/20'}`}>
-          <div>© 2024 Photography to Remember. All Rights Reserved.</div>
+        <div className={`pt-6 sm:pt-8 border-t flex flex-col md:row justify-between items-center gap-4 text-[8px] sm:text-[10px] uppercase tracking-[0.2em] font-bold text-center ${
+          theme === 'dark' ? 'border-white/5 text-white/20' : 'border-black/5 text-black/20'
+        }`}>
+          <div>© 2024 dube media. All Rights Reserved.</div>
           <div className="flex gap-6 sm:gap-8">
-            <a href="#" className={isDark ? 'hover:text-white' : 'hover:text-black'}>Privacy Policy</a>
-            <a href="#" className={isDark ? 'hover:text-white' : 'hover:text-black'}>Terms</a>
+            <a href="#" className="hover:text-current transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-current transition-colors">Terms</a>
           </div>
         </div>
       </div>
@@ -826,42 +912,36 @@ const Footer: React.FC<{ isDark: boolean }> = ({ isDark }) => {
 // --- Main App ---
 
 export default function App() {
-  const [isDark, setIsDark] = useState(true);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDark]);
-
   return (
-    <div className={`min-h-screen selection:bg-[#D4AF37] selection:text-white transition-colors duration-500 ${isDark ? 'bg-[#050505] text-white' : 'bg-white text-black'} overflow-x-hidden`}>
-      <Navbar isDark={isDark} toggleTheme={toggleTheme} />
+    <div className={`min-h-screen selection:bg-white selection:text-black overflow-x-hidden transition-colors duration-500 ${
+      theme === 'dark' ? 'bg-[#050505] text-white' : 'bg-[#fafafa] text-black'
+    }`}>
+      <Navbar theme={theme} toggleTheme={toggleTheme} />
       <main>
-        <Hero isDark={isDark} />
-        <AboutSection isDark={isDark} />
-        <ServicesSection isDark={isDark} />
-        <PricingSection isDark={isDark} />
-        <TestimonialsSection isDark={isDark} />
+        <Hero theme={theme} />
+        <AboutSection theme={theme} />
+        <ServicesSection theme={theme} />
+        <PricingSection theme={theme} />
+        <TestimonialsSection theme={theme} />
       </main>
-      <Footer isDark={isDark} />
+      <Footer theme={theme} />
 
       {/* Persistent Book Now Widget */}
       <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[60]">
         <motion.button 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-2xl flex items-center gap-3 font-bold uppercase text-[8px] sm:text-[10px] tracking-widest overflow-hidden border ${isDark ? 'bg-white text-black border-black/5' : 'bg-black text-white border-white/5'}`}
+          className="bg-white text-black p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-2xl flex items-center gap-3 font-bold uppercase text-[8px] sm:text-[10px] tracking-widest overflow-hidden border border-black/5"
           onClick={() => scrollToId('contact')}
         >
-          <div className={`w-6 h-6 sm:w-8 sm:h-8 ${isDark ? 'bg-black' : 'bg-white'} rounded-lg flex items-center justify-center overflow-hidden`}>
-            <CameraFlashIcon size={14} iconClassName={isDark ? 'text-white' : 'text-black'} />
+          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-black rounded-lg flex items-center justify-center overflow-hidden">
+            <CameraFlashIcon size={14} iconClassName="text-white" />
           </div>
           Book a Shoot
         </motion.button>
