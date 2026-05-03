@@ -139,7 +139,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme, toggleTheme }) => {
           <div className={`w-7 h-7 sm:w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
             <CameraFlashIcon size={16} iconClassName={theme === 'dark' ? 'text-black' : 'text-white'} />
           </div>
-          dube <span className="text-[#D4AF37]">media</span>
+          Marlow <span className="text-[#D4AF37]">Photography</span>
         </button>
 
         {/* Desktop Nav */}
@@ -269,7 +269,7 @@ const Hero: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
             of a Moment.
           </h1>
           <p className={`text-base sm:text-lg max-w-lg mx-auto lg:mx-0 mb-8 sm:mb-10 font-light leading-relaxed ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
-            dube media specializes in high-end portrait, dynamic event, and authentic street photography. We don't just take photos; we preserve memories.
+            Marlow Photography specializes in high-end portrait, dynamic event, and authentic street photography. We don't just take photos; we preserve memories.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
             <button 
@@ -370,7 +370,7 @@ const AboutSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
               <img 
                 src={fixedStoryImage} 
                 className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-                alt="Monga Dube DJ performance"
+                alt="Professional photography session"
               />
               <div className={`absolute inset-0 pointer-events-none bg-gradient-to-t ${theme === 'dark' ? 'from-black/60 to-transparent' : 'from-black/20 to-transparent'}`} />
             </div>
@@ -380,7 +380,7 @@ const AboutSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
             <h2 className={`text-[10px] font-bold uppercase tracking-[0.3em] mb-3 sm:mb-4 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>The Story</h2>
             <h3 className={`text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-6 sm:mb-8 leading-tight ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Crafting Visual Legacies Since 2025.</h3>
             <p className={`text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 font-light ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
-              Founded by Monga Dube, dube media was born out of a passion for the raw, unscripted beauty of the urban landscape. What started as a solo street photography project evolved into a premier media house.
+              Marlow Photography was born out of a passion for the raw, unscripted beauty of the urban landscape. What started as a solo street photography project evolved into a premier media house.
             </p>
             <p className={`text-base sm:text-lg leading-relaxed mb-6 sm:mb-10 font-light ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
               We believe every portrait has a story, every event has a heartbeat, and every street corner has a secret. We capture these moments with precision and flair.
@@ -673,7 +673,7 @@ const TestimonialsSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) =
     {
       name: "Sarah Jenkins",
       role: "Vogue Director",
-      text: "dube media captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
+      text: "Marlow Photography captured our brand essence perfectly. Their attention to detail is unmatched and they bring a unique visual flair.",
       avatar: "https://picsum.photos/id/101/100/100",
       rating: 5
     },
@@ -687,7 +687,7 @@ const TestimonialsSection: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) =
     {
       name: "Lena Rodriguez",
       role: "Wedding Planner",
-      text: "I've worked with many, but dube media is on another level. They tell stories that last and capture moments others miss completely.",
+      text: "I've worked with many, but Marlow Photography is on another level. They tell stories that last and capture moments others miss completely.",
       avatar: "https://picsum.photos/id/103/100/100",
       rating: 4
     },
@@ -861,7 +861,7 @@ const Footer: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
               <div className={`w-7 h-7 sm:w-8 h-8 rounded-full flex items-center justify-center overflow-hidden ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}>
                 <CameraFlashIcon size={16} iconClassName={theme === 'dark' ? 'text-black' : 'text-white'} />
               </div>
-              dube <span className="text-[#D4AF37]">media</span>
+              Marlow <span className="text-[#D4AF37]">Photography</span>
             </div>
             <p className={`max-w-sm mx-auto md:mx-0 mb-6 sm:mb-8 text-sm leading-relaxed ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
               Based in Cape Town. Specialized in capturing portraits, events, and authentic street photography.
@@ -888,8 +888,8 @@ const Footer: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
           <div className="text-center md:text-left">
             <h5 className={`font-bold text-xs uppercase tracking-widest mb-4 sm:mb-6 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>Contact</h5>
             <ul className={`space-y-3 sm:space-y-4 text-xs sm:text-sm ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
-              <li>hello@dubemedia.com</li>
-              <li>064 655 5865</li>
+              <li>hello@marlowphotography.com</li>
+              <li>078 692 6507</li>
               <li>Cape Town, South Africa</li>
             </ul>
           </div>
@@ -898,7 +898,7 @@ const Footer: React.FC<{ theme: 'dark' | 'light' }> = ({ theme }) => {
         <div className={`pt-6 sm:pt-8 border-t flex flex-col md:row justify-between items-center gap-4 text-[8px] sm:text-[10px] uppercase tracking-[0.2em] font-bold text-center ${
           theme === 'dark' ? 'border-white/5 text-white/20' : 'border-black/5 text-black/20'
         }`}>
-          <div>© 2024 dube media. All Rights Reserved.</div>
+          <div>© 2024 Marlow Photography. All Rights Reserved.</div>
           <div className="flex gap-6 sm:gap-8">
             <a href="#" className="hover:text-current transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-current transition-colors">Terms</a>
